@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-const GameDetails = ({ 
+const GameDetails = ({
     games,
-    addComment, 
+    addComment,
 }) => {
     const { gameId } = useParams();
     const [comment, setComment] = useState({
@@ -20,7 +20,7 @@ const GameDetails = ({
     const onChange = (e) => {
         setComment(state => ({
             ...state,
-           [e.target.name]: e.target.value
+            [e.target.name]: e.target.value
         }));
 
     }
@@ -37,20 +37,21 @@ const GameDetails = ({
                 <p className="text">
                     {game.summary}
                 </p>
-                {/* Bonus ( for Guests and Users ) */}
+
                 <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
-                        {/* list all comments for current game (If any) */}
-                        <li className="comment">
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className="comment">
-                            <p>Content: The best game.</p>
-                        </li>
+
+                        {game.comments?.map(x =>
+                            <li className="comment">
+                                <p>{x}</p>
+                            </li>
+                        )}
                     </ul>
-                    {/* Display paragraph: If there are no games in the database */}
+                    {!game.comments &&
                     <p className="no-comment">No comments.</p>
+                    }
+
                 </div>
                 {/* Edit/Delete buttons ( Only for creator of this game )  */}
                 <div className="buttons">
@@ -62,12 +63,12 @@ const GameDetails = ({
             <article className="create-comment">
                 <label>Add new comment:</label>
                 <form className="form" onSubmit={addCommentHandler}>
-                    <input 
-                    type="text" 
-                    name="username" 
-                    placeholder="John Doe"
-                    onChange={onChange}
-                    value={comment.username} 
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="John Doe"
+                        onChange={onChange}
+                        value={comment.username}
                     />
                     <textarea
                         name="comment"
