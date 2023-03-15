@@ -1,10 +1,10 @@
 import * as authService from "../../services/authService";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
-const Register = () => {
-    const { userLogin } = useContext(AuthContext);
+import { withAuth } from "../../contexts/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
+
+const Register = ({auth}) => {
+    
     const navigate = useNavigate();
 
     const onSubmit = (e) => {
@@ -21,7 +21,7 @@ const Register = () => {
         }
         authService.register(email, password)
             .then(authData => {
-                userLogin(authData);
+                auth.userLogin(authData);
                 navigate('/');
             });
     }
@@ -39,11 +39,11 @@ const Register = () => {
                     <input type="password" name="confirm-password" id="confirm-password" />
                     <input className="btn submit" type="submit" defaultValue="Register" />
                     <p className="field">
-                        <span>If you already have profile click <a href="#">here</a></span>
+                        <span>If you already have profile click <Link to="/login">here</Link></span>
                     </p>
                 </div>
             </form>
         </section>
     );
 };
-export default Register;
+export default withAuth(Register);
